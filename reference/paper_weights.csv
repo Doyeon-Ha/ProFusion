@@ -1,0 +1,313 @@
+axis,bb,arm,a_GEMME,b_GEMME,a_ddG,b_ddG,a_RSA,b_BLOSUM,b_dchg
+function,AIDO_RAG16B,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+function,AIDO_RAG16B,champ3 (3 pooled channels),1.7,1.7,0.6,0.6,0.8,0.0,0.0
+function,AIDO_RAG16B,champ5 (+2 substitution channels),1.5,1.5,0.5,0.5,0.8,0.4,0.3
+function,AIDO_RAG16B,comp7 (position/residual split),1.4,1.0,0.2,1.0,0.9,0.3,0.3
+function,AIDO_RAG16B,abl −GEMME,0.0,0.0,0.3,0.4,0.6,0.2,0.2
+function,AIDO_RAG16B,abl −ddG,1.0,0.8,0.0,0.0,0.7,0.3,0.3
+function,AIDO_RAG16B,abl −RSA,1.3,0.6,0.7,0.7,0.0,0.3,0.2
+function,AIDO_RAG16B,abl −BLOSUM,1.2,1.2,0.2,0.8,0.8,0.0,0.2
+function,AIDO_RAG16B,abl −dchg,1.3,1.0,0.2,0.8,0.9,0.3,0.0
+function,AIDO_RAG16B,abl only GEMME,1.1,0.8,0.0,0.0,0.0,0.0,0.0
+function,AIDO_RAG16B,abl only ddG,0.0,0.0,0.5,0.4,0.0,0.0,0.0
+function,AIDO_RAG16B,abl only RSA,0.0,0.0,0.0,0.0,0.6,0.0,0.0
+function,AIDO_RAG16B,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.1,0.1
+function,ESM1v,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+function,ESM1v,champ3 (3 pooled channels),3.0,3.0,1.7,1.7,1.7,0.0,0.0
+function,ESM1v,champ5 (+2 substitution channels),3.0,3.0,1.9,1.9,2.0,1.1,0.9
+function,ESM1v,comp7 (position/residual split),2.9,1.8,1.0,2.4,2.0,0.9,0.6
+function,ESM1v,abl −GEMME,0.0,0.0,1.1,1.6,1.4,0.5,0.4
+function,ESM1v,abl −ddG,3.0,2.6,0.0,0.0,2.2,1.1,0.8
+function,ESM1v,abl −RSA,3.0,1.6,2.0,2.3,0.0,0.7,0.7
+function,ESM1v,abl −BLOSUM,2.9,2.9,1.1,2.9,2.1,0.0,0.7
+function,ESM1v,abl −dchg,3.0,2.2,1.0,2.5,2.0,0.9,0.0
+function,ESM1v,abl only GEMME,3.0,2.6,0.0,0.0,0.0,0.0,0.0
+function,ESM1v,abl only ddG,0.0,0.0,1.5,1.5,0.0,0.0,0.0
+function,ESM1v,abl only RSA,0.0,0.0,0.0,0.0,1.1,0.0,0.0
+function,ESM1v,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.2,0.2
+function,ESM2,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+function,ESM2,champ3 (3 pooled channels),3.0,3.0,1.1,1.1,1.2,0.0,0.0
+function,ESM2,champ5 (+2 substitution channels),3.0,3.0,1.3,1.3,1.8,0.7,0.9
+function,ESM2,comp7 (position/residual split),2.5,1.8,0.5,1.8,1.6,0.8,0.4
+function,ESM2,abl −GEMME,0.0,0.0,0.6,1.3,1.1,0.5,0.3
+function,ESM2,abl −ddG,2.6,2.1,0.0,0.0,1.6,0.8,0.6
+function,ESM2,abl −RSA,2.7,1.7,1.6,2.0,0.0,0.8,0.5
+function,ESM2,abl −BLOSUM,2.0,1.9,0.6,1.8,1.3,0.0,0.6
+function,ESM2,abl −dchg,2.7,2.2,0.5,1.7,1.6,0.8,0.0
+function,ESM2,abl only GEMME,2.5,2.2,0.0,0.0,0.0,0.0,0.0
+function,ESM2,abl only ddG,0.0,0.0,1.2,1.2,0.0,0.0,0.0
+function,ESM2,abl only RSA,0.0,0.0,0.0,0.0,1.0,0.0,0.0
+function,ESM2,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.3,0.2
+function,ESM3,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+function,ESM3,champ3 (3 pooled channels),1.6,1.6,0.3,0.3,0.7,0.0,0.0
+function,ESM3,champ5 (+2 substitution channels),2.0,2.0,0.4,0.4,0.9,0.4,0.5
+function,ESM3,comp7 (position/residual split),1.4,1.1,-0.1,0.5,0.8,0.2,0.4
+function,ESM3,abl −GEMME,0.0,0.0,0.4,0.5,0.7,0.3,0.3
+function,ESM3,abl −ddG,1.5,1.3,0.0,0.0,0.8,0.3,0.4
+function,ESM3,abl −RSA,1.6,0.9,0.4,0.6,0.0,0.3,0.3
+function,ESM3,abl −BLOSUM,1.5,1.5,0.1,0.5,0.7,0.0,0.3
+function,ESM3,abl −dchg,1.4,0.8,0.0,0.5,0.6,0.3,0.0
+function,ESM3,abl only GEMME,1.3,1.0,0.0,0.0,0.0,0.0,0.0
+function,ESM3,abl only ddG,0.0,0.0,0.6,0.5,0.0,0.0,0.0
+function,ESM3,abl only RSA,0.0,0.0,0.0,0.0,0.6,0.0,0.0
+function,ESM3,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.1,0.2
+function,ESMIF1,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+function,ESMIF1,champ3 (3 pooled channels),3.0,3.0,0.8,0.8,0.7,0.0,0.0
+function,ESMIF1,champ5 (+2 substitution channels),3.0,3.0,0.7,0.7,1.1,0.8,0.6
+function,ESMIF1,comp7 (position/residual split),2.5,1.6,0.2,1.2,0.9,0.5,0.5
+function,ESMIF1,abl −GEMME,0.0,0.0,1.3,1.8,1.5,0.9,0.5
+function,ESMIF1,abl −ddG,1.9,1.6,0.0,0.0,0.7,0.4,0.5
+function,ESMIF1,abl −RSA,2.4,1.1,0.6,1.3,0.0,0.6,0.3
+function,ESMIF1,abl −BLOSUM,2.2,1.9,0.1,1.3,0.8,0.0,0.5
+function,ESMIF1,abl −dchg,2.5,1.8,0.3,1.4,0.9,0.4,0.0
+function,ESMIF1,abl only GEMME,1.9,1.7,0.0,0.0,0.0,0.0,0.0
+function,ESMIF1,abl only ddG,0.0,0.0,1.4,1.4,0.0,0.0,0.0
+function,ESMIF1,abl only RSA,0.0,0.0,0.0,0.0,1.0,0.0,0.0
+function,ESMIF1,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.4,0.4
+function,ProSST,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+function,ProSST,champ3 (3 pooled channels),1.7,1.7,0.3,0.3,0.7,0.0,0.0
+function,ProSST,champ5 (+2 substitution channels),1.7,1.7,0.4,0.4,0.8,0.4,0.4
+function,ProSST,comp7 (position/residual split),1.2,0.8,0.2,0.4,0.5,0.3,0.3
+function,ProSST,abl −GEMME,0.0,0.0,0.2,0.4,0.7,0.3,0.2
+function,ProSST,abl −ddG,1.0,0.8,0.0,0.0,0.6,0.3,0.3
+function,ProSST,abl −RSA,1.5,0.8,0.5,0.5,0.0,0.4,0.2
+function,ProSST,abl −BLOSUM,1.0,1.0,-0.1,0.5,0.6,0.0,0.2
+function,ProSST,abl −dchg,1.2,0.9,-0.1,0.5,0.7,0.3,0.0
+function,ProSST,abl only GEMME,1.0,0.7,0.0,0.0,0.0,0.0,0.0
+function,ProSST,abl only ddG,0.0,0.0,0.5,0.4,0.0,0.0,0.0
+function,ProSST,abl only RSA,0.0,0.0,0.0,0.0,0.6,0.0,0.0
+function,ProSST,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.1,0.1
+function,ProteinMPNN,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+function,ProteinMPNN,champ3 (3 pooled channels),3.0,3.0,1.0,1.0,1.1,0.0,0.0
+function,ProteinMPNN,champ5 (+2 substitution channels),3.0,3.0,1.0,1.0,1.3,0.9,0.9
+function,ProteinMPNN,comp7 (position/residual split),2.6,1.9,0.3,1.4,0.9,0.5,0.4
+function,ProteinMPNN,abl −GEMME,0.0,0.0,0.5,1.3,1.4,0.6,0.4
+function,ProteinMPNN,abl −ddG,2.6,2.1,0.0,0.0,1.2,0.9,0.7
+function,ProteinMPNN,abl −RSA,2.6,1.3,0.5,1.4,0.0,0.5,0.4
+function,ProteinMPNN,abl −BLOSUM,2.7,2.3,0.1,1.8,1.1,0.0,0.8
+function,ProteinMPNN,abl −dchg,3.0,2.0,0.2,1.7,1.4,0.8,0.0
+function,ProteinMPNN,abl only GEMME,2.0,1.8,0.0,0.0,0.0,0.0,0.0
+function,ProteinMPNN,abl only ddG,0.0,0.0,1.1,1.3,0.0,0.0,0.0
+function,ProteinMPNN,abl only RSA,0.0,0.0,0.0,0.0,1.1,0.0,0.0
+function,ProteinMPNN,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.3,0.3
+function,S2F,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+function,S2F,champ3 (3 pooled channels),3.0,3.0,1.2,1.2,1.2,0.0,0.0
+function,S2F,champ5 (+2 substitution channels),2.9,2.9,1.1,1.1,1.6,0.7,0.8
+function,S2F,comp7 (position/residual split),2.2,1.4,0.4,1.6,1.3,0.5,0.5
+function,S2F,abl −GEMME,0.0,0.0,0.5,0.9,0.9,0.4,0.3
+function,S2F,abl −ddG,1.8,1.6,0.0,0.0,1.1,0.4,0.4
+function,S2F,abl −RSA,2.2,1.4,1.1,1.3,0.0,0.6,0.4
+function,S2F,abl −BLOSUM,1.8,1.6,0.4,1.4,1.2,0.0,0.6
+function,S2F,abl −dchg,2.4,1.6,0.2,1.5,1.3,0.5,0.0
+function,S2F,abl only GEMME,1.9,1.6,0.0,0.0,0.0,0.0,0.0
+function,S2F,abl only ddG,0.0,0.0,0.7,0.8,0.0,0.0,0.0
+function,S2F,abl only RSA,0.0,0.0,0.0,0.0,0.7,0.0,0.0
+function,S2F,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.1,0.2
+function,SaProt650M,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+function,SaProt650M,champ3 (3 pooled channels),2.8,2.8,1.1,1.1,1.3,0.0,0.0
+function,SaProt650M,champ5 (+2 substitution channels),3.0,3.0,1.1,1.1,1.5,0.9,0.6
+function,SaProt650M,comp7 (position/residual split),1.7,1.3,0.6,1.3,1.3,0.5,0.5
+function,SaProt650M,abl −GEMME,0.0,0.0,0.5,0.8,1.0,0.4,0.2
+function,SaProt650M,abl −ddG,1.7,1.4,0.0,0.0,1.2,0.6,0.4
+function,SaProt650M,abl −RSA,2.0,1.1,1.0,1.3,0.0,0.4,0.3
+function,SaProt650M,abl −BLOSUM,1.4,1.7,0.4,1.1,1.2,0.0,0.4
+function,SaProt650M,abl −dchg,2.1,1.5,0.3,1.4,1.4,0.5,0.0
+function,SaProt650M,abl only GEMME,1.3,1.0,0.0,0.0,0.0,0.0,0.0
+function,SaProt650M,abl only ddG,0.0,0.0,0.7,0.6,0.0,0.0,0.0
+function,SaProt650M,abl only RSA,0.0,0.0,0.0,0.0,0.7,0.0,0.0
+function,SaProt650M,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.2,0.2
+function,TranceptionLret,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+function,TranceptionLret,champ3 (3 pooled channels),2.9,2.9,1.5,1.5,1.5,0.0,0.0
+function,TranceptionLret,champ5 (+2 substitution channels),3.0,3.0,1.7,1.7,1.7,0.7,0.7
+function,TranceptionLret,comp7 (position/residual split),2.5,1.5,0.8,2.3,1.6,0.5,0.6
+function,TranceptionLret,abl −GEMME,0.0,0.0,0.6,1.1,0.9,0.1,0.2
+function,TranceptionLret,abl −ddG,2.4,1.7,0.0,0.0,1.6,0.6,0.6
+function,TranceptionLret,abl −RSA,2.3,1.1,1.4,1.9,0.0,0.4,0.4
+function,TranceptionLret,abl −BLOSUM,2.2,1.6,0.7,2.2,1.3,0.0,0.5
+function,TranceptionLret,abl −dchg,2.7,1.6,0.7,2.4,1.6,0.7,0.0
+function,TranceptionLret,abl only GEMME,2.5,2.0,0.0,0.0,0.0,0.0,0.0
+function,TranceptionLret,abl only ddG,0.0,0.0,0.9,0.8,0.0,0.0,0.0
+function,TranceptionLret,abl only RSA,0.0,0.0,0.0,0.0,0.7,0.0,0.0
+function,TranceptionLret,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.0,0.1
+function,VenusREM,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+function,VenusREM,champ3 (3 pooled channels),1.6,1.6,0.4,0.4,0.6,0.0,0.0
+function,VenusREM,champ5 (+2 substitution channels),1.5,1.5,0.3,0.3,0.8,0.4,0.3
+function,VenusREM,comp7 (position/residual split),1.0,0.8,0.0,0.5,0.6,0.2,0.2
+function,VenusREM,abl −GEMME,0.0,0.0,0.1,0.4,0.7,0.3,0.2
+function,VenusREM,abl −ddG,1.2,0.9,0.0,0.0,0.7,0.4,0.3
+function,VenusREM,abl −RSA,1.2,0.7,0.4,0.4,0.0,0.2,0.2
+function,VenusREM,abl −BLOSUM,1.2,1.2,0.0,0.5,0.6,0.0,0.3
+function,VenusREM,abl −dchg,1.1,0.9,0.0,0.6,0.6,0.2,0.0
+function,VenusREM,abl only GEMME,1.1,0.9,0.0,0.0,0.0,0.0,0.0
+function,VenusREM,abl only ddG,0.0,0.0,0.4,0.4,0.0,0.0,0.0
+function,VenusREM,abl only RSA,0.0,0.0,0.0,0.0,0.5,0.0,0.0
+function,VenusREM,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.1,0.1
+function,VespaG,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+function,VespaG,champ3 (3 pooled channels),1.1,1.1,0.4,0.4,0.5,0.0,0.0
+function,VespaG,champ5 (+2 substitution channels),0.8,0.8,0.5,0.5,0.5,0.1,0.2
+function,VespaG,comp7 (position/residual split),0.7,0.5,0.2,0.6,0.5,0.0,0.2
+function,VespaG,abl −GEMME,0.0,0.0,0.3,0.5,0.3,0.0,0.1
+function,VespaG,abl −ddG,0.6,0.5,0.0,0.0,0.5,0.1,0.2
+function,VespaG,abl −RSA,0.8,0.5,0.4,0.6,0.0,-0.1,0.1
+function,VespaG,abl −BLOSUM,0.7,0.5,0.2,0.6,0.5,0.0,0.2
+function,VespaG,abl −dchg,0.6,0.4,0.2,0.6,0.4,0.0,0.0
+function,VespaG,abl only GEMME,0.9,0.7,0.0,0.0,0.0,0.0,0.0
+function,VespaG,abl only ddG,0.0,0.0,0.4,0.4,0.0,0.0,0.0
+function,VespaG,abl only RSA,0.0,0.0,0.0,0.0,0.4,0.0,0.0
+function,VespaG,abl only substitution,0.0,0.0,0.0,0.0,0.0,-0.1,0.1
+stability,AIDO_RAG16B,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+stability,AIDO_RAG16B,champ3 (3 pooled channels),0.7,0.7,1.2,1.2,0.5,0.0,0.0
+stability,AIDO_RAG16B,champ5 (+2 substitution channels),0.6,0.6,1.2,1.2,0.6,0.4,0.1
+stability,AIDO_RAG16B,comp7 (position/residual split),0.4,0.6,1.1,0.7,0.5,0.4,0.1
+stability,AIDO_RAG16B,abl −GEMME,0.0,0.0,0.9,0.7,0.4,0.3,0.1
+stability,AIDO_RAG16B,abl −ddG,0.5,0.5,0.0,0.0,0.6,0.3,0.2
+stability,AIDO_RAG16B,abl −RSA,0.4,0.4,1.3,0.7,0.0,0.3,0.2
+stability,AIDO_RAG16B,abl −BLOSUM,0.4,0.8,1.1,0.8,0.4,0.0,0.2
+stability,AIDO_RAG16B,abl −dchg,0.4,0.6,1.2,0.8,0.4,0.4,0.0
+stability,AIDO_RAG16B,abl only GEMME,0.5,0.6,0.0,0.0,0.0,0.0,0.0
+stability,AIDO_RAG16B,abl only ddG,0.0,0.0,0.9,0.6,0.0,0.0,0.0
+stability,AIDO_RAG16B,abl only RSA,0.0,0.0,0.0,0.0,0.4,0.0,0.0
+stability,AIDO_RAG16B,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.1,0.1
+stability,ESM1v,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+stability,ESM1v,champ3 (3 pooled channels),2.0,2.0,3.0,3.0,1.4,0.0,0.0
+stability,ESM1v,champ5 (+2 substitution channels),2.1,2.1,3.0,3.0,1.6,1.0,0.4
+stability,ESM1v,comp7 (position/residual split),1.9,1.8,3.0,2.6,1.3,0.9,0.3
+stability,ESM1v,abl −GEMME,0.0,0.0,2.6,2.2,1.3,0.9,0.3
+stability,ESM1v,abl −ddG,2.1,2.1,0.0,0.0,2.1,0.9,0.7
+stability,ESM1v,abl −RSA,1.8,1.6,3.0,2.1,0.0,0.6,0.3
+stability,ESM1v,abl −BLOSUM,1.7,2.5,2.9,2.7,1.4,0.0,0.4
+stability,ESM1v,abl −dchg,2.0,1.9,3.0,2.8,1.6,1.1,0.0
+stability,ESM1v,abl only GEMME,2.8,3.0,0.0,0.0,0.0,0.0,0.0
+stability,ESM1v,abl only ddG,0.0,0.0,2.6,2.2,0.0,0.0,0.0
+stability,ESM1v,abl only RSA,0.0,0.0,0.0,0.0,1.5,0.0,0.0
+stability,ESM1v,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.4,0.2
+stability,ESM2,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+stability,ESM2,champ3 (3 pooled channels),1.7,1.7,2.2,2.2,1.1,0.0,0.0
+stability,ESM2,champ5 (+2 substitution channels),1.6,1.6,2.5,2.5,1.3,0.8,0.3
+stability,ESM2,comp7 (position/residual split),1.2,1.1,2.1,1.7,0.9,0.7,0.2
+stability,ESM2,abl −GEMME,0.0,0.0,1.8,1.5,0.9,0.6,0.2
+stability,ESM2,abl −ddG,1.3,1.3,0.0,0.0,1.3,0.6,0.4
+stability,ESM2,abl −RSA,1.3,1.2,2.5,1.7,0.0,0.6,0.3
+stability,ESM2,abl −BLOSUM,1.0,1.6,2.0,1.6,0.8,0.0,0.3
+stability,ESM2,abl −dchg,1.1,1.0,1.9,1.6,0.9,0.7,0.0
+stability,ESM2,abl only GEMME,1.9,2.1,0.0,0.0,0.0,0.0,0.0
+stability,ESM2,abl only ddG,0.0,0.0,1.9,1.6,0.0,0.0,0.0
+stability,ESM2,abl only RSA,0.0,0.0,0.0,0.0,1.0,0.0,0.0
+stability,ESM2,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.3,0.2
+stability,ESM3,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+stability,ESM3,champ3 (3 pooled channels),0.8,0.8,1.0,1.0,0.5,0.0,0.0
+stability,ESM3,champ5 (+2 substitution channels),0.8,0.8,1.1,1.1,0.7,0.4,0.2
+stability,ESM3,comp7 (position/residual split),0.8,0.8,1.2,0.8,0.6,0.4,0.3
+stability,ESM3,abl −GEMME,0.0,0.0,1.1,0.7,0.5,0.4,0.2
+stability,ESM3,abl −ddG,0.6,0.6,0.0,0.0,0.6,0.2,0.2
+stability,ESM3,abl −RSA,0.8,0.7,1.3,0.7,0.0,0.3,0.2
+stability,ESM3,abl −BLOSUM,0.6,1.0,1.0,0.7,0.5,0.0,0.2
+stability,ESM3,abl −dchg,0.8,0.8,1.2,0.9,0.6,0.4,0.0
+stability,ESM3,abl only GEMME,0.7,0.6,0.0,0.0,0.0,0.0,0.0
+stability,ESM3,abl only ddG,0.0,0.0,1.1,0.7,0.0,0.0,0.0
+stability,ESM3,abl only RSA,0.0,0.0,0.0,0.0,0.5,0.0,0.0
+stability,ESM3,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.1,0.1
+stability,ESMIF1,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+stability,ESMIF1,champ3 (3 pooled channels),1.0,1.0,1.2,1.2,0.5,0.0,0.0
+stability,ESMIF1,champ5 (+2 substitution channels),0.8,0.8,1.0,1.0,0.5,0.4,0.2
+stability,ESMIF1,comp7 (position/residual split),0.7,0.8,1.0,0.8,0.5,0.4,0.3
+stability,ESMIF1,abl −GEMME,0.0,0.0,1.0,0.8,0.5,0.4,0.3
+stability,ESMIF1,abl −ddG,0.7,0.7,0.0,0.0,0.5,0.3,0.3
+stability,ESMIF1,abl −RSA,0.8,0.8,1.2,0.7,0.0,0.3,0.3
+stability,ESMIF1,abl −BLOSUM,0.7,1.1,0.9,0.8,0.4,0.0,0.2
+stability,ESMIF1,abl −dchg,0.9,0.8,1.1,1.1,0.6,0.5,0.0
+stability,ESMIF1,abl only GEMME,0.7,0.8,0.0,0.0,0.0,0.0,0.0
+stability,ESMIF1,abl only ddG,0.0,0.0,1.0,0.9,0.0,0.0,0.0
+stability,ESMIF1,abl only RSA,0.0,0.0,0.0,0.0,0.4,0.0,0.0
+stability,ESMIF1,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.2,0.2
+stability,ProSST,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+stability,ProSST,champ3 (3 pooled channels),1.0,1.0,1.3,1.3,0.6,0.0,0.0
+stability,ProSST,champ5 (+2 substitution channels),0.9,0.9,1.2,1.2,0.8,0.5,0.1
+stability,ProSST,comp7 (position/residual split),0.7,0.8,1.2,0.8,0.6,0.5,0.2
+stability,ProSST,abl −GEMME,0.0,0.0,1.1,0.8,0.6,0.5,0.1
+stability,ProSST,abl −ddG,0.7,0.7,0.0,0.0,0.6,0.3,0.2
+stability,ProSST,abl −RSA,0.7,0.7,1.3,0.7,0.0,0.3,0.2
+stability,ProSST,abl −BLOSUM,0.6,1.1,1.1,0.8,0.6,0.0,0.2
+stability,ProSST,abl −dchg,0.7,0.9,1.2,0.9,0.6,0.4,0.0
+stability,ProSST,abl only GEMME,0.7,0.7,0.0,0.0,0.0,0.0,0.0
+stability,ProSST,abl only ddG,0.0,0.0,1.2,0.9,0.0,0.0,0.0
+stability,ProSST,abl only RSA,0.0,0.0,0.0,0.0,0.5,0.0,0.0
+stability,ProSST,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.1,0.1
+stability,ProteinMPNN,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+stability,ProteinMPNN,champ3 (3 pooled channels),1.3,1.3,1.3,1.3,0.7,0.0,0.0
+stability,ProteinMPNN,champ5 (+2 substitution channels),1.1,1.1,1.2,1.2,0.7,0.5,0.3
+stability,ProteinMPNN,comp7 (position/residual split),0.9,1.0,1.0,1.0,0.6,0.5,0.3
+stability,ProteinMPNN,abl −GEMME,0.0,0.0,0.9,1.0,0.7,0.5,0.2
+stability,ProteinMPNN,abl −ddG,0.7,0.9,0.0,0.0,0.6,0.3,0.3
+stability,ProteinMPNN,abl −RSA,1.1,0.9,1.4,1.0,0.0,0.5,0.3
+stability,ProteinMPNN,abl −BLOSUM,0.8,1.3,0.9,1.0,0.6,0.0,0.3
+stability,ProteinMPNN,abl −dchg,0.9,0.9,1.0,1.1,0.7,0.5,0.0
+stability,ProteinMPNN,abl only GEMME,0.8,1.0,0.0,0.0,0.0,0.0,0.0
+stability,ProteinMPNN,abl only ddG,0.0,0.0,1.1,1.1,0.0,0.0,0.0
+stability,ProteinMPNN,abl only RSA,0.0,0.0,0.0,0.0,0.5,0.0,0.0
+stability,ProteinMPNN,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.2,0.2
+stability,S2F,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+stability,S2F,champ3 (3 pooled channels),1.2,1.2,1.7,1.7,0.9,0.0,0.0
+stability,S2F,champ5 (+2 substitution channels),1.1,1.1,1.7,1.7,1.0,0.6,0.2
+stability,S2F,comp7 (position/residual split),0.8,0.8,1.6,1.1,0.7,0.5,0.2
+stability,S2F,abl −GEMME,0.0,0.0,1.3,1.0,0.7,0.5,0.2
+stability,S2F,abl −ddG,0.9,0.8,0.0,0.0,0.9,0.4,0.3
+stability,S2F,abl −RSA,0.9,0.9,1.7,1.1,0.0,0.4,0.2
+stability,S2F,abl −BLOSUM,0.7,1.1,1.3,1.1,0.7,0.0,0.2
+stability,S2F,abl −dchg,0.8,0.8,1.4,1.1,0.8,0.5,0.0
+stability,S2F,abl only GEMME,0.9,0.8,0.0,0.0,0.0,0.0,0.0
+stability,S2F,abl only ddG,0.0,0.0,1.4,1.1,0.0,0.0,0.0
+stability,S2F,abl only RSA,0.0,0.0,0.0,0.0,0.6,0.0,0.0
+stability,S2F,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.1,0.1
+stability,SaProt650M,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+stability,SaProt650M,champ3 (3 pooled channels),1.1,1.1,1.6,1.6,0.8,0.0,0.0
+stability,SaProt650M,champ5 (+2 substitution channels),1.0,1.0,1.7,1.7,0.9,0.5,0.2
+stability,SaProt650M,comp7 (position/residual split),0.8,0.8,1.6,1.1,0.7,0.5,0.2
+stability,SaProt650M,abl −GEMME,0.0,0.0,1.3,1.0,0.6,0.4,0.2
+stability,SaProt650M,abl −ddG,0.8,0.7,0.0,0.0,0.8,0.4,0.3
+stability,SaProt650M,abl −RSA,0.8,0.8,1.8,1.1,0.0,0.4,0.2
+stability,SaProt650M,abl −BLOSUM,0.7,1.1,1.5,1.2,0.6,0.0,0.2
+stability,SaProt650M,abl −dchg,0.8,0.8,1.5,1.2,0.7,0.5,0.0
+stability,SaProt650M,abl only GEMME,0.9,0.9,0.0,0.0,0.0,0.0,0.0
+stability,SaProt650M,abl only ddG,0.0,0.0,1.3,0.9,0.0,0.0,0.0
+stability,SaProt650M,abl only RSA,0.0,0.0,0.0,0.0,0.6,0.0,0.0
+stability,SaProt650M,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.1,0.1
+stability,TranceptionLret,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+stability,TranceptionLret,champ3 (3 pooled channels),1.1,1.1,2.1,2.1,1.0,0.0,0.0
+stability,TranceptionLret,champ5 (+2 substitution channels),1.0,1.0,2.3,2.3,1.2,0.5,0.2
+stability,TranceptionLret,comp7 (position/residual split),0.5,0.2,1.6,1.4,0.8,0.4,0.2
+stability,TranceptionLret,abl −GEMME,0.0,0.0,1.3,1.1,0.6,0.2,0.2
+stability,TranceptionLret,abl −ddG,0.8,0.6,0.0,0.0,1.1,0.4,0.3
+stability,TranceptionLret,abl −RSA,0.7,0.4,2.0,1.4,0.0,0.3,0.2
+stability,TranceptionLret,abl −BLOSUM,0.4,0.4,1.4,1.3,0.6,0.0,0.2
+stability,TranceptionLret,abl −dchg,0.5,0.2,1.5,1.3,0.7,0.4,0.0
+stability,TranceptionLret,abl only GEMME,1.1,0.9,0.0,0.0,0.0,0.0,0.0
+stability,TranceptionLret,abl only ddG,0.0,0.0,1.4,1.0,0.0,0.0,0.0
+stability,TranceptionLret,abl only RSA,0.0,0.0,0.0,0.0,0.8,0.0,0.0
+stability,TranceptionLret,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.0,0.1
+stability,VenusREM,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+stability,VenusREM,champ3 (3 pooled channels),0.7,0.7,1.1,1.1,0.6,0.0,0.0
+stability,VenusREM,champ5 (+2 substitution channels),0.6,0.6,1.1,1.1,0.7,0.5,0.1
+stability,VenusREM,comp7 (position/residual split),0.4,0.6,1.0,0.8,0.6,0.4,0.1
+stability,VenusREM,abl −GEMME,0.0,0.0,0.9,0.7,0.6,0.4,0.1
+stability,VenusREM,abl −ddG,0.4,0.5,0.0,0.0,0.6,0.3,0.2
+stability,VenusREM,abl −RSA,0.5,0.7,1.3,0.7,0.0,0.3,0.2
+stability,VenusREM,abl −BLOSUM,0.4,0.9,0.9,0.8,0.6,0.0,0.1
+stability,VenusREM,abl −dchg,0.5,0.7,1.0,0.8,0.6,0.4,0.0
+stability,VenusREM,abl only GEMME,0.5,0.6,0.0,0.0,0.0,0.0,0.0
+stability,VenusREM,abl only ddG,0.0,0.0,1.0,0.8,0.0,0.0,0.0
+stability,VenusREM,abl only RSA,0.0,0.0,0.0,0.0,0.4,0.0,0.0
+stability,VenusREM,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.1,0.1
+stability,VespaG,pLM alone,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+stability,VespaG,champ3 (3 pooled channels),1.1,1.1,2.0,2.0,0.8,0.0,0.0
+stability,VespaG,champ5 (+2 substitution channels),1.0,1.0,2.1,2.1,1.0,0.5,0.2
+stability,VespaG,comp7 (position/residual split),0.6,0.7,1.7,1.3,0.6,0.3,0.2
+stability,VespaG,abl −GEMME,0.0,0.0,1.4,1.1,0.6,0.3,0.1
+stability,VespaG,abl −ddG,0.7,0.8,0.0,0.0,0.9,0.3,0.2
+stability,VespaG,abl −RSA,0.7,0.6,1.7,1.1,0.0,0.3,0.1
+stability,VespaG,abl −BLOSUM,0.5,0.8,1.5,1.2,0.6,0.0,0.2
+stability,VespaG,abl −dchg,0.6,0.8,1.8,1.4,0.7,0.4,0.0
+stability,VespaG,abl only GEMME,0.9,0.7,0.0,0.0,0.0,0.0,0.0
+stability,VespaG,abl only ddG,0.0,0.0,1.3,0.9,0.0,0.0,0.0
+stability,VespaG,abl only RSA,0.0,0.0,0.0,0.0,0.6,0.0,0.0
+stability,VespaG,abl only substitution,0.0,0.0,0.0,0.0,0.0,0.0,0.1

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "plmfusion"
+version = "0.1.0"
+description = "Fusion of pLM zero-shot scores with GEMME, ddG, RSA and substitution channels, each split into position and residual components (comp7)"
+requires-python = ">=3.11"
+# The versions of the environment that produced reference/. If numbers differ under another version, reproduce with these first.
+dependencies = [
+    "numpy==2.4.3",
+    "pandas==3.0.1",
+    "scipy==1.17.1",
+    "scikit-learn==1.8.0",
+    # The BLOSUM62 substitution matrix. src/plmfusion/predict.py uses it, so it is a core dependency, not optional.
+    "biopython==1.85",
+]
+
+[project.optional-dependencies]
+# The versions that drew the original figures. Another version renders text slightly differently (the data shown is identical).
+figures = ["matplotlib==3.10.0"]
+test = ["pytest"]
+# For reassembling the channel cache (pipeline/assemble). A CPU build of torch is enough:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+pipeline = ["torch", "biopython"]
+# For scoring a new protein (inference/). A CPU build of torch is enough here too.
+# Two external dependencies are not listed here: GEMME (the docker image elodielaine/gemme) and ddG (the SPURS repository plus checkpoint)
+inference = ["torch", "biopython", "transformers<5"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

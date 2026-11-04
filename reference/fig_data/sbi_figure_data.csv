@@ -1,0 +1,13 @@
+bb,pLM,fus,delta,grp
+AIDO_RAG16B,0.0373,0.0577,-0.0203,structure-aware
+ESM1v,0.2598,0.0742,0.1856,structure-unaware
+ESM2,0.2203,0.0879,0.1324,structure-unaware
+ESM3,0.005,0.0749,-0.0699,structure-aware
+ESMIF1,-0.0186,0.0592,-0.0778,structure-aware
+ProSST,-0.0924,0.0056,-0.098,structure-aware
+ProteinMPNN,-0.1577,0.0263,-0.1841,structure-aware
+S2F,0.1342,0.0789,0.0554,structure-aware
+SaProt650M,0.1296,0.0623,0.0673,structure-aware
+TranceptionLret,0.0915,0.0552,0.0362,structure-unaware
+VenusREM,-0.0574,0.0291,-0.0864,structure-aware
+VespaG,0.2287,0.1371,0.0916,structure-unaware

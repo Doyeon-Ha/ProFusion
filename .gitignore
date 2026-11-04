@@ -1,0 +1,12 @@
+# The data is not tracked by git. scripts/link_data.sh creates this symbolic link (see DATA.md).
+/data
+# Script output. The frozen values it is compared against live in reference/.
+# The scripts create it themselves (the mkdir in run_all.sh and in paper_numbers.write).
+# No .gitkeep is used: `rm -rf results` would then leave a tracked file behind, which is confusing.
+/results/
+__pycache__/
+*.egg-info/
+*.log
+!/reference/*.log
+# Virtual environments
+.venv/

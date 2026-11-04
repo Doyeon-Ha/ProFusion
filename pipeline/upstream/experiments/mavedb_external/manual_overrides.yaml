@@ -1,0 +1,73 @@
+# Manual resolutions for the assays where the nonsense evidence and the LLM label conflict.
+#
+# A conflict means the **sign** of the nonsense gap (whatever |gap| is) opposes the unanimous label
+# of three LLMs. Neither side is chosen automatically: the methodText or abstract of the original
+# paper is read and the direction pinned from it. The evidence quotes the MaveDB main.json text
+# verbatim, never paraphrased.
+#
+# Why the nonsense evidence can be wrong: "nonsense means loss of function" holds only where the
+# domain makes a **positive contribution**. In a negative-regulatory domain, or in a gain-of-
+# toxicity assay, truncation gives the normal phenotype instead.
+
+direction:
+  - urn: urn:mavedb:00000657-b-1
+    tname: ASPA
+    decision: higher_is_lof
+    beats: nonsense                      # overrules the nonsense gap of +0.116, which points at higher_is_wt
+    evidence: methodText
+    quote: >
+      "The reported scores are the average and standard deviation over replicates
+      normalized to a toxic control (C152W with score 1) and the non-toxic wild-type (score 0)."
+    reason: >
+      The scale is stated outright: wild type is 0 and the toxic control is 1, so a higher score
+      means more toxic. The nonsense variants scoring slightly above the missense ones
+      (gap +0.116) is because a truncated ASPA does not produce the gain of toxicity this assay
+      measures, not because it is normal.
+
+  - urn: urn:mavedb:00001221-a-2
+    tname: STIM1
+    decision: higher_is_wt
+    beats: nonsense                      # overrules the nonsense gap of -0.345 (higher_is_lof)
+    evidence: methodText + abstract
+    quote: >
+      "Survival scores were calculated as the log-transformed ratio of variant frequency
+      in the cells and the plasmid library." / "This study evaluated the variant effect of
+      the STIM1 calcium binding domain cEFhand on cell survival."
+    reason: >
+      It is a survival score, so higher means the cells live better, which means more wild-type
+      like. The cEF-hand is a Ca2+ sensor and a **negative-regulatory** domain of STIM1, so
+      breaking it causes constitutive activation, excessive Ca2+ influx and reduced survival.
+      Truncation (nonsense) removes the STIM1 protein itself and so causes no constitutive
+      activation, which leaves survival high. That is why the nonsense variants score above the
+      missense ones, and why the "nonsense means loss of function" premise fails here.
+      The sibling set of the same study, 00001221-a-1, had a gap below the threshold and was
+      already higher_is_wt through the LLM route. This corrects two siblings receiving opposite
+      signs merely because they landed on opposite sides of a threshold.
+
+  - urn: urn:mavedb:00001221-a-1
+    tname: STIM1
+    decision: higher_is_wt
+    beats: none                          # the same as the existing llm_unanimous conclusion, stated here for consistency with its sibling
+    evidence: methodText + abstract
+    quote: >
+      "Survival scores were calculated as the log-transformed ratio of variant frequency
+      in the cells and the plasmid library."
+    reason: The same assay as 00001221-a-2 above (with endogenous STIM1 present). The sign is matched to its sibling.
+
+  - urn: urn:mavedb:00001201-a-1
+    tname: TSC2
+    decision: higher_is_lof
+    beats: llm                           # overrules the unanimous LLM label (higher_is_wt)
+    evidence: nonsense + target biology  # the methodText states no direction, so it cannot be quoted directly
+    quote: >
+      "Variant allele frequencies were then used to calculate a functional (enrichment) score
+      using the Enrich2 statistical framework."
+    reason: >
+      The methodText says only that it is an Enrich2 enrichment score and never says which end is
+      normal, so the decision rests on the nonsense evidence, whose premise does hold here. TSC2 is
+      a tumour suppressor and the full-length protein inhibits mTORC1, so a truncating variant is a
+      **genuine complete loss of function** (unlike the STIM1 cEF-hand, where removing one domain
+      normalises the phenotype). Its 47 nonsense variants scored clearly above the missense ones
+      (gap -0.977, the second largest effect size among the 49 assays), so a higher score means
+      loss of function. The three LLMs all saying higher_is_wt appears to be a judgement made from
+      the name "functional score" alone.

@@ -1,0 +1,72 @@
+# Manual exclusions applied after the rule-based filter.
+#
+# Every one of them is a data-validity exclusion decided **before any performance was seen**. The
+# reason for each is recorded so that a reviewer can reverse it. There are two grades.
+#
+#   hard   in principle unsuited to the task. Nothing to reverse.
+#   assay  what is measured is not the "loss of function caused by the variant" axis. Judgement
+#          went into these, so they can be reversed.
+
+hard:
+  - urn: urn:mavedb:00000094-a-3
+    tname: KCNQ4
+    reason: >
+      The score is V1/2, the half-activation voltage. Deviating above the wild type (a
+      depolarising shift, loss of function) and below it (a hyperpolarising shift, gain of
+      function) are both abnormal, so it is not a monotone measure. Fixing the sign as either
+      higher_is_wt or higher_is_lof is wrong, and the Spearman itself loses meaning.
+  - urn: urn:mavedb:00000094-a-5
+    tname: KCNQ4
+    reason: V1/2. Same reason as above (co-expressed with wild type).
+  - urn: urn:mavedb:00000094-a-7
+    tname: KCNQ4
+    reason: V1/2. Same reason as above (co-expressed, 153 variants).
+  - urn: urn:mavedb:00000664-a-2
+    tname: KCNQ2
+    reason: V1/2. Same reason as above (expressed alone in CHO cells).
+  - urn: urn:mavedb:00000664-a-5
+    tname: kcnq2
+    reason: V1/2. Same reason as above (co-expressed with wild type).
+  - urn: urn:mavedb:00000672-d-1
+    tname: SARS-CoV-2 PLpro
+    reason: >
+      Its shortDescription reads "All variants - see urn:mavedb:00000672-d-3" and points at d-3.
+      It is a duplicate entry of the same measurement, so including both would count it twice.
+      Only d-3 is kept.
+
+assay:
+  - urn: urn:mavedb:00000672-b-2
+    tname: SARS-CoV-2 PLpro
+    reason: >
+      It measures escape from the inhibitors 3k and 5c. A variant with high escape evades the drug;
+      the protein is not broken. That is a different thing from the "loss of function" axis the
+      fused score predicts. LLM-based filters elsewhere also set drug and stress selection assays
+      aside as special cases.
+  - urn: urn:mavedb:00000672-e-2
+    tname: SARS-CoV-2 PLpro
+    reason: Escape from inhibitor 5c. Same reason as above.
+  - urn: urn:mavedb:00000672-f-2
+    tname: SARS-CoV-2 PLpro
+    reason: Escape from inhibitor 3k. Same reason as above.
+  - urn: urn:mavedb:00000661-c-1
+    tname: COMT_ROI1_2
+    reason: >
+      It is RNA abundance. For a missense variant the RNA level is unrelated to folding and
+      degradation and instead captures codon and splicing effects. Putting it on the abundance axis
+      would fit a different phenomenon on the same axis. Only the protein abundance set of the same
+      study (00000661-d-1) is kept.
+  - urn: urn:mavedb:00000661-a-1
+    tname: COMT_ROI1_2
+    reason: Mid-polysome abundance, a measure of translation. Same reason as above.
+  - urn: urn:mavedb:00000661-b-1
+    tname: COMT_ROI1_2
+    reason: Heavy-polysome abundance, a measure of translation. Same reason as above.
+
+# Not excluded, but worth recording (correlated, duplicated readouts):
+#   F9, 5 sets (00001200-a to -e): five detection panels by tag and domain from one study. One study
+#     thus accounts for 5 of the 18 assays on the stability axis, so the weights on that axis can be
+#     pulled towards F9.
+#   RBP6, 3 sets (00001212-a-2, -3, -4): identical titles. They look like time points or replicates.
+#   LDLRAP1, 2 sets: the title says "imputed and refined", so some scores are model estimates.
+#   00000094-a-6: V1/2 appears in the title, but the score itself is normalised current, which is
+#     monotone. Kept.
