@@ -1,194 +1,248 @@
-# plmfusion: reproduction code for ProFusion (comp7)
+# ProFusion
 
-ProFusion adds five auxiliary channels (GEMME, ΔΔG, RSA, BLOSUM62, Δcharge) to a protein language
-model's zero-shot score. Each channel is split into a position-mean component and a within-position
-residual component, and the seven resulting terms are mixed with fitted weights. That seven-weight
-model is `comp7`, which the paper calls ProFusion.
+Source code for the Research in Computational Molecular Biology (RECOMB) 2027
+submission. ProFusion raises the accuracy of a protein language model (pLM) on
+variant effect prediction by fusing its zero-shot score with five auxiliary
+channels, using weights fitted entirely outside the evaluation benchmark.
 
-Weights are fitted on an external MaveDB tuning set only. ProteinGym labels are used for evaluation
-only. **No part of the fitting path touches ProteinGym.**
+The five channels are GEMME, a stability change on folding (ΔΔG) predicted by
+SPURS, relative solvent accessibility (RSA), BLOSUM62 and the change in residue
+charge. Each channel is split into a position-mean component and a
+within-position residual component, giving seven weighted terms. That seven-term
+model is `comp7`, which the manuscript calls ProFusion. Fitting is a coordinate
+descent over a fixed grid; there is no gradient training and no learned
+parameters beyond those seven numbers.
 
-The code runs 12 backbones across 2 assay axes (function, 129 DMS; expression, 18 DMS).
+The code covers the numerical results in the manuscript and the supplementary
+material: weight fitting, evaluation across 12 backbones and 2 assay axes,
+channel ablations and Shapley attribution, the axis cross-application control,
+the ProteinGym-internal tuning control, the appendix Stability axis, variant
+scoring for a new protein, and figure rendering. The
+[figure and table map](#figures-and-tables) identifies each reproduction path.
 
-⚠ The `axis` column of the output CSVs and the file names under `results/` still use the older name
-`stability` for the expression axis. It is the same axis the paper calls expression. The appendix
-ΔΔG stability axis is a different set of 65 assays, named `stability_ddg`.
+## Installation
 
-## Quick start
+Run commands from this repository's root. The environment targets Linux and
+Python 3.12 or later. No graphics processing unit (GPU) is required for anything
+in this repository.
 
 ```bash
-git clone https://github.com/Doyeon-Ha/ProFusion.git && cd ProFusion
-export PLMFUSION_DATA=/path/to/plmfusion_data      # channel cache, see DATA.md
-python -m venv .venv && source .venv/bin/activate  # conda works too (python >= 3.11)
+git clone https://github.com/Doyeon-Ha/ProFusion.git
+cd ProFusion
+python -m venv .venv && source .venv/bin/activate
 pip install -e ".[test,figures]"
-bash scripts/run_all.sh                            # paper numbers and figures. CPU only, about 2.5 h
-pytest tests/                                      # checks results/ against reference/
+.venv/bin/python -c 'import numpy, pandas, scipy, sklearn, matplotlib; print(numpy.__version__)'
 ```
 
-- No GPU is used.
-- For the paper numbers alone, run `bash scripts/run_paper_numbers.sh` (about 6 minutes).
-- Most of the 2.5 hours is a single step, `scripts/ablation_lattice.py` (32 channel subsets x 24
-  cells, about 2 hours). Table 1 and the Shapley values read its output. Everything else together
-  takes under 30 minutes.
-- The channel cache is not in this repository. [DATA.md](DATA.md) describes what it contains and how
-  to point the code at it; [pipeline/README.md](pipeline/README.md) describes how it was built.
-- Each step logs to `results/logs/`, and `results/logs/STATUS` records success or failure. A correct
-  run has no `FAILED` line in `STATUS`.
-- Four Python files are not called directly by `run_all.sh` and are not dead code.
-  `scripts/paper_numbers.py` is invoked cell by cell by `run_paper_numbers.sh`, and
-  `figures/{backbone_key,fig_common,plot_fig1_ext}.py` are shared modules the figure scripts import.
+`pyproject.toml` pins the versions that produced the frozen values in
+`reference/`: numpy 2.4.3, pandas 3.0.1, scipy 1.17.1, scikit-learn 1.8.0 and
+matplotlib 3.10.0. Another version may shift the last digits of a metric; the
+weights lie on a grid and should not move.
 
-## Layout
+Two optional extras cover work beyond reproducing the numbers.
+`pip install -e ".[pipeline]"` adds what the channel-cache assembly needs, and
+`pip install -e ".[inference]"` adds what scoring a new protein needs.
 
-```
-ProFusion/
-├── scripts/
-│   ├── run_all.sh               full run (numbers, then figure inputs, then figures)
-│   ├── run_paper_numbers.sh     paper numbers over 24 cells in parallel (same result as serial)
-│   └── paper_numbers.py         paper numbers. --bb/--axis for one cell, --merge to combine
-├── src/plmfusion/
-│   ├── paths.py                 data and output paths (the only place paths are defined)
-│   ├── common.py                7-slot fusion record (Rec), coordinate descent, protein-wise K-fold
-│   ├── grids.py                 weight grids. All paper weights use the "uni3" grid
-│   ├── external.py              MaveDB external-set record (ERec) and loader
-│   └── predict.py               scoring without labels (for inference)
-├── figures/
-│   ├── data/                    scripts that build figure inputs
-│   ├── legacy/                  older figures no longer in the paper (see legacy/README.md)
-│   ├── backbone_key.py          backbone names, colours, structure-conditioning flag (shared)
-│   ├── fig_common.py            fonts, sizes, save conventions (shared)
-│   ├── plot_fig1_ext.py         panel functions used by plot_fig1_ext_v3 (shared)
-│   └── plot_*.py                the 11 paper figures
-├── inference/                   scoring a new protein from MSA and structure (inference/README.md)
-├── pipeline/                    how the channel cache npz files were built (pipeline/README.md)
-│   ├── assemble/                intermediate files to npz. Reproducible on CPU
-│   ├── upstream/                the code that produced the intermediate files (GPU, docker)
-│   ├── run_assemble.sh          assemble, then compare against the cache
-│   └── check_synonymous.py      measures whether 842 synonymous rows change the numbers
-├── reference/                   frozen values (paper CSVs; figure data under reference/fig_data/)
-├── results/                     run output (not tracked by git)
-└── tests/
-    ├── test_reproduce.py        compares results/ against reference/
-    └── test_predict.py          checks the inference path scores the same as the evaluation path
+## Data downloads and access
+
+The raw sources are public. ProteinGym supplies the evaluation assays and MaveDB
+supplies the external tuning assays. This repository does not redistribute either
+one, and it does not contain the derived channel cache.
+
+**The channel cache is distributed separately.** It holds 2,758 files totalling
+966 MB, which is too large to track in git. Point the code at it with an
+environment variable, or place it (or a symbolic link to it) at `data/`:
+
+```bash
+export PLMFUSION_DATA=/path/to/plmfusion_data_2026-11-03
 ```
 
-## Protocol
+| Input | Source | Required local input |
+| --- | --- | --- |
+| Evaluation assays and labels | [ProteinGym](https://proteingym.org/) | folded into the channel cache under `proteingym/two_dim/` |
+| External tuning assays | [MaveDB](https://www.mavedb.org/) | folded into the channel cache under `mavedb_external/two_dim/` |
+| Channel cache (966 MB) | distributed separately; contact the authors | `PLMFUSION_DATA`, or a `data/` symbolic link |
+
+[DATA.md](DATA.md) lists what the cache contains, how the code reads it, every
+npz key the paper numbers use, and the integrity check
+(`sha256sum -c MANIFEST.sha256`). [pipeline/README.md](pipeline/README.md)
+documents how the cache was built from the public sources.
+
+⚠ Keep the date suffix on the cache directory. Earlier snapshots exist and differ
+in which backbones and which assays they contain. Pointing at the wrong one
+leaves the code running normally while backbones disappear silently. The frozen
+values in `reference/` correspond to the **2026-11-03** snapshot.
+
+**Trained model weights are not needed.** ProFusion has no weights beyond the
+seven fitted numbers, which are in `reference/paper_weights.csv`. The backbone
+scores they are fused with are already in the channel cache.
+
+## Hardware resources
+
+CPU means central processing unit and RAM is host random-access memory. The
+table records reference measurements and provisioning guidance, **not measured
+minimum hardware requirements**.
+
+| Stage | GPU | CPUs | Host RAM | Wall time |
+| --- | --- | --- | --- | --- |
+| Paper numbers, one cell (one backbone, one axis) | None | 4 threads | 210 MiB peak resident | 4 min 45 s measured |
+| Paper numbers, all 24 cells in parallel | None | 24 x 4 threads | Provision about 6 GiB | about 6 min |
+| Full pipeline (`run_all.sh`) | None | 6 threads default | Provision about 4 GiB | about 2.5 h |
+| Channel-cache assembly (`pipeline/run_assemble.sh`) | None | 1 | Provision about 4 GiB | about 3 min |
+| Scoring one new protein (`inference/`) | Optional | 1 to 4 | Provision about 8 GiB | minutes, see below |
+
+The one-cell figures are a measurement on a single backbone and axis
+(ESM2, function); they are a reference point, not a bound for every cell. The
+parallel figure is derived from it and from the default 24-way split, not
+measured as a whole.
+
+**About 80% of the full pipeline is one step.** `scripts/ablation_lattice.py`
+fits 32 channel subsets across 24 cells and runs for roughly two hours on a
+single core. Everything else together finishes inside 30 minutes. The cells are
+independent, so that step parallelises the same way
+`scripts/run_paper_numbers.sh` already does, but it is shipped serial because
+that is how the published numbers were produced.
+
+Scoring a new protein is the one place with external dependencies: GEMME runs in
+docker (`elodielaine/gemme`), ΔΔG needs the SPURS repository and checkpoint in
+their own environment, and RSA needs `mkdssp`. A GPU only speeds up the pLM
+log-likelihood ratio (LLR) step. See [inference/README.md](inference/README.md).
+
+## Check the implementation
+
+The tests read the channel cache and compare against the frozen values in
+`reference/`. They cover the evaluation cohort sizes, the fitting-set sizes, the
+fitted weights, every published metric, the numbers each figure drew, and the
+equivalence between the inference path and the evaluation path.
+
+```bash
+.venv/bin/python -m pytest -q tests
+```
+
+The weights are compared exactly, because they lie on a grid. The metrics are
+allowed a floating-point difference of 1e-9. Tests skip rather than fail when a
+result file has not been generated yet, so run the pipeline first for a complete
+check. These tests verify the implementation against frozen values; they do not
+recompute the benchmark from the raw sources.
+
+## Reproduce the paper numbers
+
+```bash
+bash scripts/run_all.sh     # numbers, then figure inputs, then figures
+pytest tests/               # compare results/ against reference/
+```
+
+Each step logs to `results/logs/` and records success in `results/logs/STATUS`.
+A correct run has no `FAILED` line there. For the paper numbers alone, without
+the ablations or the figures, run `bash scripts/run_paper_numbers.sh`.
+
+The protocol is the claim of the paper, so it is stated exactly:
 
 | | |
-|---|---|
-| Fitting | MaveDB external set. Anything identical or homologous to a ProteinGym sequence is excluded with MMseqs2 (`pg_tier=='none'`), and the rule is frozen by sha256 |
-| Evaluation | ProteinGym. **Labels are used for evaluation only.** There is no fitting loop on the ProteinGym side |
-| Axes | function and expression are fitted separately. The first and second most useful channels swap between axes, so the two are never pooled |
-| Grid | **uni3**: all 7 slots from −3.0 to 3.0 in steps of 0.1 (61 points), coordinate descent, 3 passes, starting from zero |
-| Backbones | 12, restricted to those with an LLR on both the ProteinGym and the external side (`paper_numbers.EXTBB`) |
+| --- | --- |
+| Fitting | MaveDB external set only. Anything identical or homologous to a ProteinGym sequence is excluded with MMseqs2, and the rule is frozen by sha256 |
+| Evaluation | ProteinGym only. **No part of the fitting path touches it** |
+| Axes | function (129 DMS) and expression (18 DMS), fitted separately. The two most useful channels swap between axes, so the axes are never pooled |
+| Grid | all 7 slots from −3.0 to 3.0 in steps of 0.1 (61 points), coordinate descent, 3 passes, starting from zero |
+| Fitting set | 35 deep mutational scanning (DMS) assays on function (34 for ESM-1v, which lacks one score) and 14 on expression |
+| Backbones | 12, restricted to those with an LLR on both sides |
 
-⚠ **State the grid whenever you argue a mechanism from an individual slot value.** The earlier
-`wide` grid had a lower bound of 0 on the GEMME and ΔΔG slots, so those slots could not go negative.
-Under `wide`, the a_ddG value for ESM3 and ProSST was exactly 0; under `uni3` it is −0.1 for ESM3 and
-0.2 for ProSST. The ordering of the arms by performance is the same under both grids.
+⚠ The `axis` column of the output and the file names under `results/` use the
+older name `stability` for the expression axis. The appendix ΔΔG stability axis
+is a different set of 65 assays, named `stability_ddg`.
 
-## What paper_numbers.py produces
+⚠ State the grid whenever you argue a mechanism from an individual weight. An
+earlier grid had a lower bound of 0 on two slots, which made a fitted value of
+exactly 0 an artefact of the boundary rather than a result. The ordering of the
+arms by performance is the same under both grids.
 
-| Group | Contents |
-|---|---|
-| F1 fusion ladder | pLM alone, then champ3 (3 pooled channels), champ5 (+2 substitution channels), comp7 (position/residual split) |
-| F3 channel ablation | comp7 with one channel removed, and with one channel only |
-| F4 implementation identity | the substitution axis of "only RSA" equals the pLM substitution axis; the position axis of "only substitution" equals the pLM position axis |
+## Score a new protein
 
-F4 should not be expected to be exactly zero. The amount a residual channel adds to a position mean
-is mathematically zero but about 1e-16 in floating point, and when the baseline has positions whose
-means are *exactly* equal, that residue breaks the tie and changes the ranking. The measured upper
-bound is 4e-05. Suspect the decomposition only if it exceeds 1e-4.
+Given a multiple sequence alignment and a structure, `inference/` scores the
+variants of one protein with the fitted weights. **No weights are refitted and no
+labels are needed.**
 
-### Metrics
+```bash
+python inference/predict_protein.py \
+  --seq p.fasta --a3m p.a3m --pdb p.pdb \
+  --assay Binding --backbone ESM2 --out out/
+```
 
-Every metric is computed within one DMS and then averaged over DMS.
+A larger fused score means closer to wild type. The scores are a ranking **within
+one protein** and are not comparable across proteins.
+[inference/README.md](inference/README.md) covers the inputs, the per-step cost,
+the validation against the cached channels, and six conditions under which the
+output should not be trusted.
 
-| Column | Definition |
-|---|---|
-| `rho` | Spearman correlation between the fused score and the DMS label. Unitless, [-1, 1], higher is better |
-| `rho_pos` | Position axis. Spearman between per-position mean score and per-position mean label |
-| `rho_sub` | Substitution axis. Mean of the Spearman values measured within positions that have at least 5 variants |
-| `p10` | Fraction of the 10 most damaging variants recovered (overlap between the top 10 predicted and the top 10 labelled) |
-| `ef1` | Fraction of damaging variants in the top 1% of predictions (at least 3) divided by the overall fraction. Damaging means the bottom 20% of labels |
-| `auroc` | AUROC under the same definition of damaging |
+## Figures and tables
 
-### Output (results/)
+Figures and the numbers they drew land in `results/figures/`; figure inputs land
+in `results/fig_data/`. The file names on the manuscript side differ, because
+they were renamed on upload.
 
-- `paper_perdms.csv`: raw values per DMS, backbone and arm
-- `paper_summary.csv`: means per axis, backbone and arm
-- `paper_weights.csv`: the 7 fitted weights. Column order is a_GEMME, b_GEMME, a_ddG, b_ddG, a_RSA, b_BLOSUM, b_dchg
-- `logs/paper_numbers.log`: the tables and the F4 identity output
+| Manuscript | Generator | Output under `results/` |
+| --- | --- | --- |
+| Figure 1 | none, a hand-drawn schematic | — |
+| Figure 2 | `figures/plot_fig1_ext_v3.py` | `figures/fig1_ext_v3.pdf` |
+| Figure 3 | `figures/plot_axis_weights.py` | `figures/fig_axis_weights.pdf` |
+| Figure 4 | `figures/plot_model_needs_2ax.py --bymodel` | `figures/fig_model_needs_2ax_bymodel.pdf` |
+| Figure 5 | `figures/plot_sbi_figure.py` | `figures/sbi_figure.pdf` |
+| Table 1 | `scripts/ablation_table.py` | `ablation_table.tex`, `.json` |
+| In-text numbers | `scripts/final_numbers.py`, `scripts/paneld_numbers.py` | `final_numbers.json`, `FINAL.md` |
+| Supplementary, tail decomposition | `figures/plot_supp_breakdown.py --both --ecdf-b` | `figures/figS_breakdown_ecdf_b_147.pdf` |
+| Supplementary, eta-squared criterion | `figures/plot_eta2_criterion.py` | `figures/eta2_criterion.pdf` |
+| Supplementary, how much pLM is needed | `figures/plot_plm_need.py` | `figures/fig_plm_need.pdf` |
+| Supplementary, internal tuning control | `figures/plot_internal_tune.py` | `figures/internal_tune.pdf` |
+| Supplementary, axis cross-application | `figures/plot_axis_crossapply.py` | `figures/axis_crossapply.pdf` |
+| Supplementary, case study | `figures/plot_fig5_case.py` | `figures/fig5_case.pdf` |
+| Supplementary, appendix Stability | `figures/plot_stability_three_arm.py` | `figures/stability_13bb_three_arm.pdf` |
 
-## Figures
+⚠ `plot_model_needs_2ax.py` produces a different layout with no arguments. The
+manuscript version is `--bymodel`, and `run_all.sh` passes it.
 
-Figures (PDF, PNG) and the numbers they draw (`*_data.csv`) land in `results/figures/`; figure inputs
-land in `results/fig_data/`.
+The figure font is Source Sans Pro, with DejaVu Sans as the fallback.
+`figures/legacy/` holds three figures from an earlier version of the manuscript,
+with the reason in `figures/legacy/README.md`.
 
-The figures and tables in the paper map to the generators below. The file names on the paper side
-were changed when the files were uploaded to Overleaf, so they may differ from the package output.
+## Reference values
 
-| Paper | Generator | Package output (`results/`) |
-|---|---|---|
-| Figure 1 `main_arch.pdf` | none (hand-drawn schematic) | — |
-| Figure 2 `fig1_ext_v3.pdf` | `figures/plot_fig1_ext_v3.py` | `figures/fig1_ext_v3.pdf` |
-| Figure 3 `fig_axis_weights.pdf` | `figures/plot_axis_weights.py` | `figures/fig_axis_weights.pdf` |
-| Figure 4 `fig_model_needs_2.pdf` | `figures/plot_model_needs_2ax.py --bymodel` | `figures/fig_model_needs_2ax_bymodel.pdf` |
-| Figure 5 `sbi_figure_add.pdf` | `figures/plot_sbi_figure.py` | `figures/sbi_figure.pdf` |
-| Table 1 | `scripts/ablation_table.py` | `ablation_table.tex`, `.csv` |
-| In-text numbers | `scripts/final_numbers.py`, `scripts/paneld_numbers.py` | `logs/final_numbers.log` and others |
-| Supp `figS_breakdown_ecdf_b_147.pdf` | `figures/plot_supp_breakdown.py` | `figures/figS_breakdown_ecdf_b_147.pdf` |
-| Supp `eta2_criterion.pdf` | `figures/plot_eta2_criterion.py` | `figures/eta2_criterion.pdf` |
-| Supp `fig_plm_need.pdf` | `figures/plot_plm_need.py` | `figures/fig_plm_need.pdf` |
-| Supp `fig_pg_tuned.pdf` | `figures/plot_internal_tune.py` | `figures/internal_tune.pdf` |
-| Supp `axis_crossapply.pdf` | `figures/plot_axis_crossapply.py` | `figures/axis_crossapply.pdf` |
-| Supp `fig5_case.pdf` | `figures/plot_fig5_case.py` | `figures/fig5_case.pdf` |
-| Supp `fig_stability.pdf` | `figures/plot_stability_three_arm.py` | `figures/stability_13bb_three_arm.pdf` |
+`reference/` holds the frozen values the tests compare against: the fitted
+weights, every per-assay metric, the numbers behind each figure, and two logs.
+They were produced with the 2026-11-03 snapshot, 12 backbones and the grid above.
+Regenerating them requires the same snapshot, since a different one can change
+the cohort silently.
 
-⚠ Running `plot_model_needs_2ax.py` with no arguments produces the `stack` variant. The paper version
-is `--bymodel`, and `run_all.sh` passes that argument.
+## Source provenance and third-party code
 
-- The `_147` in `figS_breakdown_ecdf_b` is the number of DMS across both axes (129 + 18). The file
-  name changes with the cohort.
-- `figures/legacy/` holds three older figures that are no longer in the paper, with the reason in
-  `figures/legacy/README.md`.
-- `figures/plot_fig1_ext.py` is not a paper figure. It is a **shared module** whose panel functions
-  `plot_fig1_ext_v3.py` imports. Do not run it on its own.
-- `plot_supp_breakdown.py` runs twice. `--both --ecdf-b` produces the figure that appears in the
-  paper, and `--both` leaves the numeric CSV (`figS_breakdown_147_data.csv`) used for regression
-  checks.
-- The figure font is Source Sans Pro. DejaVu Sans is used when it is unavailable.
+The code was ported from the authors' research repository. **No research git
+history is included.** Machine-specific values in `pipeline/upstream/` —
+absolute paths, cluster node names and environment directories — were replaced
+by placeholders such as `<REPO>` and `<MAVEDB_DIR>`; those files document how
+each intermediate file was produced and are not runnable as they stand.
 
-## Where to start reading
-
-- `common.Rec`: the position-mean and residual decomposition (`split`)
-- `common.descend_tied`: the coordinate descent
-- `scripts/paper_numbers.py`: the metric definitions in `metrics`
-- `scripts/run_paper_numbers.sh`: why splitting the work into cells gives the same result
-
-## Reference values (reference/)
-
-Produced with the `uni3` grid, 12 backbones and the **2026-11-03** data snapshot (function 129,
-expression 18). The tests require the weights to match exactly and allow a difference of up to 1e-9
-on the metrics.
-
-⚠ To regenerate the reference values you must point at the same data snapshot. A different snapshot
-can change the cohort silently, which changes every number downstream.
-
-Environment used: Python 3.12, numpy 2.4.3, pandas 3.0.1, scipy 1.17.1, scikit-learn 1.8.0,
-matplotlib 3.10.0 (pinned in `pyproject.toml`).
+Channel and backbone sources carry their own terms. In particular, **AIDO RAG
+16B is released under a non-commercial licence**, and whether its clause on using
+outputs to train a similar model reaches fusion outputs is a question for legal
+review rather than one this repository settles.
 
 ## Known limitations
 
-1. **The steps that build the channel intermediate files** (LLR, GEMME, ΔΔG, structure prediction)
-   are not runnable from this package. They need GPUs, docker and external repositories. The code is
-   kept under `pipeline/upstream/` as a record of how each file was produced, with machine-specific
-   paths replaced by placeholders. The assembly step that turns those intermediate files into npz is
-   reproducible on CPU ([pipeline/README.md](pipeline/README.md)).
-   ⚠ Assembly reproduces the original 8 backbones. For the 4 added later (VenusREM, VespaG,
-   SaProt650M, AIDO RAG 16B) the upstream output is outside the data snapshot.
-2. **The channel cache is distributed separately.** It is 966 MB and is not in this repository. See
-   [DATA.md](DATA.md).
-3. **AIDO RAG 16B is released under a non-commercial licence.** Whether §1.2.2 of that licence
-   (which forbids using outputs to train a similar model) applies to fusion outputs is a question for
-   legal review, not something this repository settles.
+1. **The steps that build the channel intermediate files** (LLR, GEMME, ΔΔG,
+   structure prediction) are not runnable from this package; they need GPUs,
+   docker and external repositories. The assembly step that turns those files
+   into the cache is reproducible on CPU.
+   ⚠ Assembly reproduces the original 8 backbones. For the 4 added later
+   (VenusREM, VespaG, SaProt650M, AIDO RAG 16B) the upstream output lies outside
+   the distributed snapshot.
+2. **GEMME is not deterministic.** Rerunning it on an identical alignment and
+   variant list gives different values. The effect on a fused score is small
+   (Spearman 0.998 between two runs) but it is not zero.
+3. **Folding-ΔG assays are not supported** by the inference path. The ΔΔG channel
+   comes from a model trained on that data, so scoring them would read the
+   training data back.
+
+## License
+
+A licence has not been attached to this repository yet. Until one is, no usage
+rights are granted; contact the authors. Dataset and external model terms apply
+independently.
