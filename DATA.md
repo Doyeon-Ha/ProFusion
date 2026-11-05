@@ -1,28 +1,41 @@
 # Data
 
 The code is in this repository; the data is distributed separately. The channel cache is about
-966 MB over 2,758 files, which is too large to track in git.
+966 MB over 2,761 files, which is too large to track in git.
 
 Point the code at it with an environment variable:
 
 ```bash
-export PLMFUSION_DATA=/path/to/plmfusion_data_2026-11-03
+export PLMFUSION_DATA=/path/to/plmfusion_data
 ```
 
 Alternatively, place the cache (or a symbolic link to it) at `data/` inside the repository.
+`bash scripts/link_data.sh /path/to/the/cache` makes that link and checks the cache in one step.
 `data/` is listed in `.gitignore`, so it is never committed. `PLMFUSION_DATA` takes priority over
 `data/` when both are present.
 
-⚠ Keep the date suffix in the directory name. Earlier snapshots exist, and they differ in which
-backbones and which assays they contain. Pointing at the wrong one leaves the code running normally
-while backbones disappear silently and the paper numbers fail to reproduce. The reference values in
-`reference/` correspond to the **2026-11-03** snapshot.
+The directory may be called anything. Nothing in the code reads its name: `paths.py` takes the
+path and nothing else.
+
+⚠ **Check which snapshot it is.** Earlier snapshots exist, and they differ in which backbones and
+which assays they contain. Pointing at the wrong one leaves the code running normally while
+backbones disappear silently and the paper numbers fail to reproduce. What identifies a snapshot is
+the sha256 of `MANIFEST.sha256`, not the name of the directory it sits in:
+
+```bash
+sha256sum "$PLMFUSION_DATA/MANIFEST.sha256"
+# 0f1fd5588c6e9366d42e12480822bdf5f841b0c3da1eb54a579d1e2408f8133e
+```
+
+That is the **2026-11-03** snapshot, the one the values in `reference/` were frozen against.
+`scripts/link_data.sh` runs this check and warns when it does not match.
 
 ## Contents
 
 ```
-plmfusion_data_2026-11-03/
-├── MANIFEST.sha256                        sha256 checksums (2,758 files)
+plmfusion_data/
+├── MANIFEST.sha256                        sha256 checksums, covering 2,758 of those files
+│                                          its own sha256 identifies the snapshot
 ├── proteingym/
 │   ├── two_dim/<DMS_id>.npz               212 files. Evaluation set
 │   │                                      (function 129, expression 18, appendix stability_ddg 65)
@@ -101,8 +114,16 @@ channels is kept under `pipeline/upstream/`, and the step order is documented in
 
 ## Integrity
 
-- Verify with `cd "$PLMFUSION_DATA" && sha256sum -c MANIFEST.sha256`.
+- Verify the files with `cd "$PLMFUSION_DATA" && sha256sum -c MANIFEST.sha256`.
+- Confirm the snapshot with `sha256sum "$PLMFUSION_DATA/MANIFEST.sha256"`: it must be
+  `0f1fd5588c6e...`. `scripts/link_data.sh` does this for you.
+- ⚠ **Two files are outside both checks.** `MANIFEST.sha256` lists 2,758 of the 2,761 files; it
+  does not list itself, nor `mavedb_external/neff.json`, nor `mavedb_external/hhblits_run.log`. So
+  neither the checksum run nor the snapshot hash notices if those two change. `neff.json` is a real
+  input: `scripts/msa_depth.py` reads it.
 - **Do not add files to the data directory.** The code reads `two_dim/*.npz` by glob, so a single
-  extra npz changes the results silently. Keeping the directory read-only prevents this.
+  extra npz changes the results silently. Keeping the directory read-only prevents this. Neither
+  check above sees an added file either.
 - To update the data: unlock with `chmod -R u+w`, replace the files, regenerate `MANIFEST.sha256`
-  and `reference/`, then lock it read-only again.
+  and `reference/`, set `SNAPSHOT` in `scripts/link_data.sh` to the new manifest hash, then lock it
+  read-only again.

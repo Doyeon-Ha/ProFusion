@@ -54,12 +54,12 @@ The raw sources are public. ProteinGym supplies the evaluation assays and MaveDB
 supplies the external tuning assays. This repository does not redistribute either
 one, and it does not contain the derived channel cache.
 
-**The channel cache is distributed separately.** It holds 2,758 files totalling
+**The channel cache is distributed separately.** It holds 2,761 files totalling
 966 MB, which is too large to track in git. Point the code at it with an
 environment variable, or place it (or a symbolic link to it) at `data/`:
 
 ```bash
-export PLMFUSION_DATA=/path/to/plmfusion_data_2026-11-03
+export PLMFUSION_DATA=/path/to/plmfusion_data
 ```
 
 | Input | Source | Required local input |
@@ -73,10 +73,15 @@ npz key the paper numbers use, and the integrity check
 (`sha256sum -c MANIFEST.sha256`). [pipeline/README.md](pipeline/README.md)
 documents how the cache was built from the public sources.
 
-⚠ Keep the date suffix on the cache directory. Earlier snapshots exist and differ
-in which backbones and which assays they contain. Pointing at the wrong one
-leaves the code running normally while backbones disappear silently. The frozen
-values in `reference/` correspond to the **2026-11-03** snapshot.
+The cache directory may be called anything. Nothing in the code reads its name.
+
+⚠ Check which snapshot you have. Earlier snapshots exist and differ in which
+backbones and which assays they contain. Pointing at the wrong one leaves the
+code running normally while backbones disappear silently. The directory name
+does not identify a snapshot; the sha256 of `MANIFEST.sha256` does, and it is
+`0f1fd5588c6e...` for the **2026-11-03** snapshot that the frozen values in
+`reference/` were produced with. `scripts/link_data.sh` checks this and warns on
+a mismatch.
 
 **Trained model weights are not needed.** ProFusion has no weights beyond the
 seven fitted numbers, which are in `reference/paper_weights.csv`. The backbone
@@ -215,7 +220,8 @@ with the reason in `figures/legacy/README.md`.
 weights, every per-assay metric, the numbers behind each figure, and two logs.
 They were produced with the 2026-11-03 snapshot, 12 backbones and the grid above.
 Regenerating them requires the same snapshot, since a different one can change
-the cohort silently.
+the cohort silently. `scripts/link_data.sh` reports whether the cache you have is
+that snapshot.
 
 ## Source provenance and third-party code
 
@@ -256,6 +262,8 @@ review rather than one this repository settles.
 
 ## License
 
-A licence has not been attached to this repository yet. Until one is, no usage
-rights are granted; contact the authors. Dataset and external model terms apply
-independently.
+The project's original code is licensed under the Apache License, Version 2.0.
+The full text is in [LICENSE](LICENSE).
+
+Dataset and external model terms apply independently; see
+[Source provenance and third-party code](#source-provenance-and-third-party-code).
