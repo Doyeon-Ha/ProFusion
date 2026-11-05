@@ -265,5 +265,8 @@ review rather than one this repository settles.
 The project's original code is licensed under the Apache License, Version 2.0.
 The full text is in [LICENSE](LICENSE).
 
-Dataset and external model terms apply independently; see
-[Source provenance and third-party code](#source-provenance-and-third-party-code).
+That covers this repository's own code and nothing else. The datasets and the
+backbone models the code builds on carry their own terms, which apply
+independently, and AIDO RAG 16B in particular is released under a
+non-commercial licence. The section "Source provenance and third-party code"
+above has the detail.
