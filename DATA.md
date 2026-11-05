@@ -80,9 +80,15 @@ Three things to watch:
   interchangeable.
 - ⚠ One external npz has no `llr_ESM1v`, which is why ESM-1v fits on 34 function DMS where the other
   backbones fit on 35. The loader filters it out and writes a warning.
-- ⚠ The 65 `stability_ddg` assays carry no LLR for S2F, VespaG, VenusREM or AIDO. Because
-  `common.load` filters by axis first, the main numbers are unaffected, and the appendix Stability
-  results cover only the backbones that have an LLR there.
+- ⚠ **ESM2 has two keys and they are different quantities.** `llr_ESM2` is wildtype-marginal and
+  `llr_ESM2mask` is masked-marginal, the official ProteinGym convention. The paper uses the
+  masked one, and `common.LLR_ALIAS = {"ESM2": "ESM2mask"}` makes the backbone name `ESM2`
+  resolve to it. Anyone writing their own loader against this table must read `llr_ESM2mask`:
+  reading `llr_ESM2` silently gives a different baseline. (On the **fitting** side the two are
+  kept apart by name rather than aliased; see pipeline/README.md item 2b.)
+- All 13 LLR keys are present on all 65 `stability_ddg` assays. An earlier snapshot was missing
+  S2F, VespaG, VenusREM and AIDO there; they were folded with ColabFold and added, so the
+  appendix Stability axis now covers every backbone.
 
 Other keys (`llr_S2F`, `dhyd`, `wt20` and so on) are used by other analyses and by some figures, but
 not by the paper numbers.

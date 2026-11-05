@@ -47,8 +47,12 @@ step() {
 ( step msa_depth           scripts/msa_depth.py ) &
 ( step eta2                figures/data/eta2.py ) &
 # Appendix Stability. Two fitting conventions (pre/off) are run to make the three arms.
-( step stability_pre scripts/stability_protocol.py --tag _pre \
-  && step stability_off scripts/stability_protocol.py --official --tag _off ) &
+# ⚠ --extra is required, not optional. It adds the ESM2mask row, which is the ESM2 the
+#   appendix reports: masked-marginal on BOTH the tuning and the evaluation side. Without it
+#   the row is absent, plot_stability_three_arm.py drops the mixed-convention "ESM2" row it
+#   does have, and the figure comes out with 11 backbones instead of the 12 the text states.
+( step stability_pre scripts/stability_protocol.py --extra --tag _pre \
+  && step stability_off scripts/stability_protocol.py --extra --official --tag _off ) &
 wait
 
 # ---------------------------------------------------------- B. analyses that consume A

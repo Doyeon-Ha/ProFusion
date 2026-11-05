@@ -13,12 +13,17 @@ model is `comp7`, which the manuscript calls ProFusion. Fitting is a coordinate
 descent over a fixed grid; there is no gradient training and no learned
 parameters beyond those seven numbers.
 
-The code covers the numerical results in the manuscript and the supplementary
-material: weight fitting, evaluation across 12 backbones and 2 assay axes,
-channel ablations and Shapley attribution, the axis cross-application control,
-the ProteinGym-internal tuning control, the appendix Stability axis, variant
-scoring for a new protein, and figure rendering. The
-[figure and table map](#figures-and-tables) identifies each reproduction path.
+The code covers the variant effect prediction results of the manuscript and the supplementary
+material: weight fitting, evaluation across 12 backbones and 2 assay axes, channel ablations
+and Shapley attribution, the axis cross-application control, the ProteinGym-internal tuning
+control, the appendix Stability axis, variant scoring for a new protein, and figure rendering.
+The [figure and table map](#figures-and-tables) identifies each reproduction path.
+
+⚠ **The active-residue identification results are not in this release.** Everything the
+manuscript reports on identifying ligand-binding residues is excluded: Section 4.5 and its
+figure, the dataset section that describes the PDBbind-derived proteins, and the two
+supplementary sections on position-level tuning and on the threshold sweep. See
+[Known limitations](#known-limitations) item 1.
 
 ## Installation
 
@@ -227,17 +232,25 @@ review rather than one this repository settles.
 
 ## Known limitations
 
-1. **The steps that build the channel intermediate files** (LLR, GEMME, ΔΔG,
+1. **The active-residue identification branch is not released.** The manuscript applies the
+   same fitted-weight idea to a second task, identifying ligand-binding residues on
+   PDBbind-derived human proteins, and reports it in the abstract, in Section 4.5 with its
+   figure, in the corresponding dataset section, and in two supplementary sections (the
+   position-level weight fitting and the sweep over the critical-position threshold). None of
+   that code, and none of its inputs or outputs, is in this repository, and nothing here
+   reproduces those numbers. It is a separate benchmark with its own data dependencies, held
+   back by the authors for now. Everything else the manuscript reports is covered.
+2. **The steps that build the channel intermediate files** (LLR, GEMME, ΔΔG,
    structure prediction) are not runnable from this package; they need GPUs,
    docker and external repositories. The assembly step that turns those files
    into the cache is reproducible on CPU.
    ⚠ Assembly reproduces the original 8 backbones. For the 4 added later
    (VenusREM, VespaG, SaProt650M, AIDO RAG 16B) the upstream output lies outside
    the distributed snapshot.
-2. **GEMME is not deterministic.** Rerunning it on an identical alignment and
+3. **GEMME is not deterministic.** Rerunning it on an identical alignment and
    variant list gives different values. The effect on a fused score is small
    (Spearman 0.998 between two runs) but it is not zero.
-3. **Folding-ΔG assays are not supported** by the inference path. The ΔΔG channel
+4. **Folding-ΔG assays are not supported** by the inference path. The ΔΔG channel
    comes from a model trained on that data, so scoring them would read the
    training data back.
 

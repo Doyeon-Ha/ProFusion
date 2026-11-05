@@ -12,7 +12,25 @@ from scipy.stats import rankdata
 from . import common as C
 from . import paths
 
-EXT = paths.data_root() / "mavedb_external"
+_ext_dir = None
+
+
+def ext_dir():
+    """The MaveDB external-set directory, resolved on first use, not at import.
+
+    Same reason as common.cache_dir(): importing the package must not require the data.
+    `EXT` still works, through __getattr__ below.
+    """
+    global _ext_dir
+    if _ext_dir is None:
+        _ext_dir = paths.data_root() / "mavedb_external"
+    return _ext_dir
+
+
+def __getattr__(name: str):
+    if name == "EXT":
+        return ext_dir()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 class ERec:
@@ -55,9 +73,9 @@ class ERec:
 
 
 def load_ext(bb, axis=None):
-    keep = set(pd.read_csv(EXT / "direction_manual.csv").urn)
+    keep = set(pd.read_csv(ext_dir() / "direction_manual.csv").urn)
     out = []
-    for f in sorted((EXT / "two_dim").glob("*.npz")):
+    for f in sorted((ext_dir() / "two_dim").glob("*.npz")):
         d = np.load(f, allow_pickle=True)
         if str(d["urn"]) in keep and (axis is None or str(d["axis"]) == axis) and f"llr_{bb}" in d.files:
             out.append(ERec(f, bb))

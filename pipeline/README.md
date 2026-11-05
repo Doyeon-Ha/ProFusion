@@ -138,8 +138,20 @@ result as rerunning steps 3b and 8.
 
 **2. ESM-1v is scored differently in the fitting set and the evaluation set.**
 The evaluation set uses masked-marginal (`run_esm1v.py`) and the fitting set wildtype-marginal
-(`build_llr.py`). Only the averaging over 5 models is shared. The other three backbones (ESM2,
-ESM3, ProSST) are wildtype-marginal on both sides.
+(`build_llr.py`). Only the averaging over 5 models is shared.
+
+**2b. ESM2 is masked-marginal, and two keys for it exist side by side.**
+Every npz carries both `llr_ESM2` (wildtype-marginal, the original) and `llr_ESM2mask`
+(masked-marginal, the official ProteinGym convention). The paper uses the masked one:
+`common.LLR_ALIAS = {"ESM2": "ESM2mask"}` redirects the evaluation side, so asking for the
+backbone `ESM2` reads `llr_ESM2mask`. ⚠ Reading `llr_ESM2` directly gives the wildtype-marginal
+quantity instead, with no error and plausible-looking numbers. Of the remaining backbones,
+ESM3 and ProSST are wildtype-marginal on both sides.
+
+The two keys also differ on the **fitting** side, and there the choice is explicit rather than
+aliased. `scripts/stability_protocol.py` keeps both: the backbone `ESM2` means masked on
+evaluation but wildtype on tuning, and `ESM2mask` (added by `--extra`) means masked on both.
+The appendix Stability axis reports `ESM2mask`.
 
 **3. ESM3 is multimodal on both sides.**
 `build_llr.py`, `build_llr_struct.py`, `build_channels.py` and the comments in the original README

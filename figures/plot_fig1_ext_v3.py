@@ -115,7 +115,7 @@ def main():
     out = H / "figures/fig1_ext_v3"
     out.parent.mkdir(parents=True, exist_ok=True)
     R.to_csv(out.with_name("fig1_ext_v3_data.csv"), index=False)
-    fig.subplots_adjust(left=0.068, right=0.995, top=0.945, bottom=0.145)
+    fig.subplots_adjust(left=0.068, right=0.978, top=0.945, bottom=0.145)
     for fmt in ("pdf", "png"):
         fig.savefig(out.with_suffix(f".{fmt}"), dpi=300)
     plt.close(fig)

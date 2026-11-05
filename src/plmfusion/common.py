@@ -32,7 +32,29 @@ logger = logging.getLogger(__name__)
 
 # Paths are defined only in paths.py.
 from . import paths  # noqa: E402
-CACHE = paths.pg_cache()
+
+_cache_dir: Path | None = None
+
+
+def cache_dir() -> Path:
+    """The ProteinGym channel cache, resolved on first use.
+
+    It is deliberately NOT resolved at import time. Scoring a new protein
+    (plmfusion.predict) needs the fitted weights and the caller's own channels, not this
+    cache, and importing the package used to fail on a fresh clone that had never downloaded
+    it. `C.CACHE` still works: __getattr__ below routes it here.
+    """
+    global _cache_dir
+    if _cache_dir is None:
+        _cache_dir = paths.pg_cache()
+    return _cache_dir
+
+
+def __getattr__(name: str):
+    if name == "CACHE":
+        return cache_dir()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
 # 2026-10-28: emptied. It used to be {"CCDB_ECOLI_Adkar_2012"}.
 # In that assay the label is measured per position and copied to every substitution at that
 # position (1,176 variants, 49 distinct label values, within-position SD of 0 at all 100
@@ -143,7 +165,7 @@ def load(bb: str, axis: str = "function"):
     backbone.
     """
     R, skipped = [], []
-    for f in sorted(CACHE.glob("*.npz")):
+    for f in sorted(cache_dir().glob("*.npz")):
         if f.stem in DROP:
             continue
         with np.load(f, allow_pickle=True) as z:

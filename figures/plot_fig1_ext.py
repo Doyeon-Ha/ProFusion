@@ -219,7 +219,7 @@ def arms_panel(ax, rows, tag="d"):
                 xytext=(13, 0), ha="center", va="center", fontsize=6.0,
                 color=PALETTE["main"], fontweight="bold")
     ax.set_xticks([0, 1])
-    ax.set_xticklabels(["ProSST-2048\n(1 model)", "ensemble\n(6 models)"], fontsize=6.4)
+    ax.set_xticklabels(["ProSST-2048\n(1 model)", "ProSST-ensemble\n(6 models)"], fontsize=6.4)
     ax.set_xlim(-0.10, 1.10)
     ax.set_ylabel("mean ρ per assay", labelpad=2)
     # ⚠ This number is over both axes (function + expression). Panel c is function only, so its range differs.
