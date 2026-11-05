@@ -13,6 +13,8 @@ model is `comp7`, which the manuscript calls ProFusion. Fitting is a coordinate
 descent over a fixed grid; there is no gradient training and no learned
 parameters beyond those seven numbers.
 
+![Overview of ProFusion: a frozen pLM zero-shot score fused with seven weighted components derived from five auxiliary channels, each split into a position-mean and a within-position residual term](docs/main_arch.png)
+
 The code covers the variant effect prediction results of the manuscript and the supplementary
 material: weight fitting, evaluation across 12 backbones and 2 assay axes, channel ablations
 and Shapley attribution, the axis cross-application control, the ProteinGym-internal tuning
